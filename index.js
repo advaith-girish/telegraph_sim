@@ -55,7 +55,7 @@ io.on('connection',(socket)=>{ //socket contains client details
             socket.to(data.room).emit('final_message', data);
         }
         else 
-            socket.to(data.room).emit('server_message',{ sender: data.sender, message: data.message });//distribute to all expect sender
+            socket.to(data.room).emit('server_message',{ sender: data.sender, message: data.message });//distribute to required
             console.log("Dest roomkey:",data);
             //io.to(data.room).emit('message', data);
     });
