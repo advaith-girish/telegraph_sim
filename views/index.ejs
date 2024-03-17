@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <title>ChatApp</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="div1">
+    <h1 style="text-align: center;"><%= username %></h1>
+    <div style="display: flex; flex-direction: column;" >
+    <button onclick="stopinp()" class="button-52">stopinp</button>
+    <br><br>
+
+    <button id="morseButton" class="button-52" onmousedown="startTimeout()" onmouseup="handleButtonRelease()">Click and hold</button>
+    </div>
+    <p id="status"></p>
+    <div id="inputWindow"></div>
+</div>
+
+    <br><br>
+    <input type="text" id="message" class="input" placeholder="Enter here">
+    <br><br>
+    <button class="button-86" id="sendBtn">Send</button>
+    <br><br>
+
+    
+    <div class="div3">
+        <div id="chatbot">
+            <header>
+                <h2><%= username %></h2>
+            </header>
+            <ul class="chatbox" style="text-decoration: none;">
+                
+            </ul>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const sendBtn = document.getElementById('sendBtn');
+        const messageInput = document.getElementById('message');
+        //const allMessages = document.querySelector('.messages');
+
+        const allMessages = document.querySelector('.chatbox');
+
+        let str='';
+        function print(){
+            window.alert(str);
+        }
+        function clr(){
+            str='';
+        }
+
+    let inputTimeout;
+    let spaceTimeout;
+    let morseCode = '';
+    let morseResult = '';
+    let inputWindow = document.getElementById("inputWindow");
+    let isTimeoutStarted = false;
+    let spaceTimeoutStarted = false;
+
+    // Function to start timeout when the button is clicked and held
+    function startTimeout() {
+    // Clear previous timeouts (if any)
+    clearTimeout(inputTimeout);
+    clearTimeout(spaceTimeout);
+
+    // Set flag to true indicating startTimeout() was called
+    isTimeoutStarted = false;
+
+    // Start a new timeout after 300 milliseconds (adjust as needed)
+    inputTimeout = setTimeout(() => {
+        // If button is still pressed after 300 milliseconds, interpret as dash
+        isTimeoutStarted = true;
+        morseCode += '-';
+        morseResult+=morseCode;console.log(morseResult);
+        updateStatus();
+        morseCode = ''; // Reset Morse code after processing
+    }, 300);
+    }
+
+    // Function to handle button release
+    function handleButtonRelease() {
+    // If startTimeout() was called, do not execute handleButtonRelease()
+    if (isTimeoutStarted) {
+        return;
+    }
+    
+    // Clear timeout when button is released
+    clearTimeout(inputTimeout);
+
+    // If button is released before 300 milliseconds, interpret as dot
+    morseCode += '.';
+    morseResult+=morseCode;console.log(morseResult);
+    updateStatus();
+    morseCode = ''; // Reset Morse code after processing
+    }
+
+    // Function to update status message
+    function updateStatus() {
+    document.getElementById("status").textContent = "Morse code input: " + morseCode;
+    document.getElementById("message").value+= morseCode;
+    inputWindow.textContent += morseCode;
+    morseResult+=morseCode;console.log(morseResult);
+
+    // Start space timeout after 3 seconds
+    if (!spaceTimeoutStarted) {
+        startSpaceTimeout();
+    }
+    }
+
+    // Function to start space timeout
+    function startSpaceTimeout() {
+    // Clear previous space timeout (if any)
+    clearTimeout(spaceTimeout);
+    
+    // Start a new timeout after 3 seconds to insert a space
+    spaceTimeout = setTimeout(() => {
+        morseCode += ' ';
+        morseResult+=morseCode;console.log(morseResult);
+        spaceTimeoutStarted = true;// Insert space
+        updateStatus();
+        morseCode = '';
+        spaceTimeoutStarted = false
+    }, 3000); 
+    
+    }
+    let morseCodeMessage = '';
+
+    function stopinp(){
+        console.log(inputWindow.textContent);
+        const morseCodeDict = {
+    'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.', 'G': '--.', 'H': '....',
+    'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..', 'M': '--', 'N': '-.', 'O': '---', 'P': '.--.',
+    'Q': '--.-', 'R': '.-.', 'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
+    'Y': '-.--', 'Z': '--..',
+    '0': '-----', '1': '.----', '2': '..---', '3': '...--', '4': '....-', '5': '.....',
+    '6': '-....', '7': '--...', '8': '---..', '9': '----.',
+    ' ': ' ',};
+    
+    for (let char of morseResult.toUpperCase()) {
+        if (char in morseCodeDict) {
+            morseCodeMessage += morseCodeDict[char] + ' ';  // Add space between characters
+        } else {
+            morseCodeMessage += ' ';  // Treat unknown characters as space
+        }
+    }
+    morseCodeMessage.trim();
+    messageInput.value='';
+
+}
+    
+
+    socket.on('server_message',(data)=>{
+        console.log("from socket server "+data);
+        const morseCodeDict = {
+    'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.', 'G': '--.', 'H': '....',
+    'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..', 'M': '--', 'N': '-.', 'O': '---', 'P': '.--.',
+    'Q': '--.-', 'R': '.-.', 'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
+    'Y': '-.--', 'Z': '--..',
+    '0': '-----', '1': '.----', '2': '..---', '3': '...--', '4': '....-', '5': '.....',
+    '6': '-....', '7': '--...', '8': '---..', '9': '----.',
+    ' ': ' ',  // Space
+};
+
+    if(data.message[0]>='a' && data.message[0]<='z'){
+        allMessages.innerHTML+=`<li><strong>${data.sender}:</strong> ${data.message}</li>`;
+        return;
+
+    }
+        let plaintextMessage = '';
+            const morseCodeList = data.message.split(' ');  // Split Morse code into individual characters
+        for (let i = 0; i < morseCodeList.length; i++) {
+        if (morseCodeList[i] === '' && morseCodeList[i + 1]) {
+            plaintextMessage += ' ';
+            continue;
+        }
+        for (let [char, code] of Object.entries(morseCodeDict)) {
+            if (morseCodeList[i] === code) {
+                plaintextMessage += char;
+                break;
+            }
+        }
+    }
+    console.log("deyy",plaintextMessage);
+    messageInput.value='';
+        
+    allMessages.innerHTML+=`<li><strong>${data.sender}:</strong> ${plaintextMessage}</li>`;
+    });
+
+    socket.on('final_message',(data)=>{
+        const morseCodeDict = {
+    'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.', 'G': '--.', 'H': '....',
+    'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..', 'M': '--', 'N': '-.', 'O': '---', 'P': '.--.',
+    'Q': '--.-', 'R': '.-.', 'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
+    'Y': '-.--', 'Z': '--..',
+    '0': '-----', '1': '.----', '2': '..---', '3': '...--', '4': '....-', '5': '.....',
+    '6': '-....', '7': '--...', '8': '---..', '9': '----.',
+    ' ': ' ',  // Space
+};
+if(data.message[0]>='a' && data.message[0]<='z'){
+        allMessages.innerHTML+=`<li><strong>${data.sender}:</strong> ${data.message}</li>`;
+        return;
+
+    }
+
+
+        let plaintextMessage = '';
+            const morseCodeList = data.message.split(' ');  // Split Morse code into individual characters
+        for (let i = 0; i < morseCodeList.length; i++) {
+        if (morseCodeList[i] === '' && morseCodeList[i + 1]) {
+            plaintextMessage += ' ';
+            continue;
+        }
+        for (let [char, code] of Object.entries(morseCodeDict)) {
+            if (morseCodeList[i] === code) {
+                plaintextMessage += char;
+                break;
+            }
+        }
+    }
+    console.log("deyy",plaintextMessage);
+    messageInput.value='';
+    allMessages.innerHTML+=`<li><strong>${data.sender}:</strong> ${plaintextMessage}</li>`;
+    
+        console.log("for final server "+data);
+        });
+
+    sendBtn.addEventListener('click', () => {
+            
+            const message=messageInput.value;
+            const sendernm = '<%= username %>';
+            let room = '<%= roomkey %>';
+            if (sendernm === 'server') {
+            room = prompt('Enter the room key:');
+            //socket.emit('user_message', { sender:sendernm, message: message, room: room });
+            }
+            socket.emit('user_message', { sender:sendernm, message: message, room: room });
+            
+            messageInput.value='';
+
+    });
+
+    </script>
+</body>
+</html>

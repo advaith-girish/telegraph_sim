@@ -1,0 +1,395 @@
+* {
+    font-family: 'Times New Roman', Times, serif;
+  }
+  
+  body {
+    background: #17810e;
+  }
+  
+  .container {
+    background-color: #17810e;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    gap: 3em;
+    flex-grow: 1;
+    padding: 0 40px;
+  
+  }
+  
+  .div1,
+  .div2,
+  .div3 {
+    width: 60em;
+    height: 25em;
+    background-color: #7eacce;
+    box-shadow: 5px 5px 25px #000000;
+    padding: 10px 30px;
+    border-radius: 10px;
+  }
+  
+  .div3 {
+    background: #7eacce;
+  }
+  
+  .div2{
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: end;
+    gap: 30px;
+    
+  }
+  
+  .div2,
+  .div3 {
+    display: flex;
+    align-items: end;
+    justify-content: center;
+  }
+  
+  
+  .morse_img {
+    margin-bottom: 25px;
+    max-width: 100%;
+  }
+  
+  
+  @media(max-width: 1200px) {
+    .container {
+      height: 100%;
+      flex-direction: row;
+    }
+  
+    .div1,
+    .div2,
+    .div3 {
+      max-width: 80%;
+      padding: 30px;
+  
+    }
+  }
+  
+  
+  /* CSS */
+  .button-86 {
+    all: unset;
+    width: 100px;
+    height: 30px;
+    font-size: 16px;
+    background: transparent;
+    border: none;
+    position: relative;
+    color: #f0f0f0;
+    cursor: pointer;
+    z-index: 1;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+  
+  .button-86::after,
+  .button-86::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: -99999;
+    transition: all .4s;
+  }
+  
+  .button-86::before {
+    transform: translate(0%, 0%);
+    width: 100%;
+    height: 100%;
+    background: #28282d;
+    border-radius: 10px;
+  }
+  
+  .button-86::after {
+    transform: translate(10px, 10px);
+    width: 35px;
+    height: 35px;
+    background: #ffffff15;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 50px;
+  }
+  
+  .button-86:hover::before {
+    transform: translate(5%, 20%);
+    width: 110%;
+    height: 110%;
+  }
+  
+  .button-86:hover::after {
+    border-radius: 10px;
+    transform: translate(0, 0);
+    width: 100%;
+    height: 100%;
+  }
+  
+  .button-86:active::after {
+    transition: 0s;
+    transform: translate(0, 5%);
+  }
+  
+  .input {
+    border-radius: 10px;
+    outline: 2px solid #000000;
+    border: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: #e2e2e2;
+    outline-offset: 3px;
+    padding: 10px 1rem;
+    transition: 0.25s;
+  }
+  
+  .input:focus {
+    outline-offset: 5px;
+    background-color: #fff
+  }
+
+  #chatbot{
+  
+    display: flex;
+    flex-direction: column;
+    right: 40px;
+    bottom: 100px;
+    width: 400px;
+    overflow: hidden;
+    background: #fff !important;
+    border-radius: 15px;
+    box-shadow: 0 0 128px 0 rgba(0, 0, 0, 0.1),
+      0 32px 64px -48px rgba(0, 0, 0, 0.5);
+  }
+  #chatbot header{
+    background:#724ae8 ;
+    padding: 16px 0;
+    text-align: center;
+  }
+  #chatbot header h2{
+    color: #fff;
+    font-size: 1.4rem;
+  }
+  #chatbot .chatbox {
+    
+    height: 10em;
+    overflow-y: auto;
+    padding: 30px 20px 70px;
+  }
+  .chatbox .chat{
+    display: flex;
+  }
+  .chatbox .incoming span{
+    height: 32px;
+    width: 32px;
+    color: #fff;
+    align-self: flex-end;
+    background: #724ae8;
+    text-align: center;
+    line-height: 32px;
+    border-radius: 4px;
+    margin: 0 10px 7px o;
+  }
+  
+  .chatbox .chat p{
+    color:#fff;
+    max-width: 75%;
+    font-size: 0.95rem;
+    padding: 12px 16px;
+    border-radius: 10px 10px 0 10px;
+    background: #724ae8;
+  }
+  .chatbox .incoming p{ 
+    color: #000000;
+    background: #f2f2f2;
+    border-radius: 10px 10px 10px 0;
+  }
+  .button {
+    --text: #C3C8DE;
+    --plane: #4F29F0;
+    --background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border: 0;
+    padding: 0;
+    width: 140px;
+    height: 60px;
+    background: none;
+    color: var(--text);
+    cursor: pointer;
+    outline: none;
+    svg.btn-layer {
+      display: block;
+      position: absolute;
+      top: -20px;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      z-index: 2;
+      pointer-events: none;
+      fill: var(--background);
+    }
+    svg.plane {
+      z-index: 3;
+      position: absolute;
+      left: 32px;
+      display: block;
+      width: 26px;
+      height: 28px;
+      fill: var(--plane);
+      transform: translate3d(0, 0, 0);
+      perspective: 500px;
+    }
+    > ul {
+      list-style: none;
+      padding: 0 5px 0 0;
+      position: relative;
+      overflow: hidden;
+      > li {
+        display: inline-block;
+        position: relative;
+        z-index: 2;
+        padding-left: 40px;
+        font: 400 16px 'Varela Round', sans-serif;
+        transition: transform .3s ease 0s, opacity .3s ease 0s;
+        &:first-child {
+          opacity: 1;
+        }
+        &:last-child {
+          position: absolute;
+          left: 0;
+          top: 100%;
+          opacity: 0;
+        }
+      } 
+    }
+    &.active {
+      svg.plane {
+        animation: 1.5s orbit alternate linear;
+      }
+      > ul {
+        > li {
+          transform: translateY(-100%);
+          transition: transform .3s ease 1.2s, opacity .3s ease 1.2s;
+          &:first-child {
+            opacity: 0;
+          }
+          &:last-child {
+            opacity: 1;
+          }
+        } 
+      }
+    }
+  }
+
+
+  .button-52 {
+    font-size: 16px;
+    font-weight: 200;
+    letter-spacing: 1px;
+    padding: 13px 20px 13px;
+    outline: 0;
+    border: 1px solid black;
+    cursor: pointer;
+    position: relative;
+    background-color: rgba(255, 243, 243, 0.815);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+  
+  .button-52:after {
+    content: "";
+    background-color: #ffe54c;
+    width: 100%;
+    z-index: -1;
+    position: absolute;
+    height: 100%;
+    top: 7px;
+    left: 7px;
+    transition: 0.2s;
+  }
+  
+  .button-52:hover:after {
+    top: 0px;
+    left: 0px;
+  }
+  
+  @media (min-width: 768px) {
+    .button-52 {
+      padding: 13px 50px 13px;
+    }
+  }
+
+
+  @keyframes orbit {
+    0% {
+      transform: rotate3d(1,0,0,0deg) translateZ(60px) scale3d(1,1,1);
+      animation-timing-function: ease-in;
+    }
+    10% {
+      z-index: 3;
+      transform: rotate3d(1,.6,0,-10deg) translateZ(60px) scale3d(1,1,1);
+      animation-timing-function: ease-out;
+    }
+    20% {
+      z-index: 3;
+      transform: rotate3d(1,.6,0,30deg) translateZ(60px) scale3d(1,1,1);
+      animation-timing-function: ease-out;
+    }
+    30% {
+      z-index: 3;
+      transform: rotate3d(1,.6,0,35deg) translateZ(60px) scale3d(1,1,1);
+    }
+    40% {
+      z-index: 1;
+      transform: rotate3d(1,.6,0,120deg) translateZ(60px)  scale3d(.7,.7,1);
+    }
+    70% {
+      z-index: 1;
+      transform: rotate3d(1,.6,0,240deg) translateZ(60px)  scale3d(.7,.7,1);
+      animation-timing-function: ease-out;
+    }
+    100% {
+      z-index: 3;
+      transform: rotate3d(1,0,0,360deg) translateZ(60px)  scale3d(1,1,1);
+    }
+  }
+  
+  
+  
+  body {
+    background: #0a4153;
+    height: 100vh;
+    font: 400 16px 'Varela Round', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .socials {
+      position: fixed;
+      display: block;
+      left: 20px;
+      bottom: 20px;
+      > a {
+        display: block;
+        width: 30px;
+        opacity: .2;
+        transform: scale(var(--scale, .8));
+        transition: transform .3s cubic-bezier(0.38,-0.12, 0.24, 1.91);
+        &:hover {
+          --scale: 1;
+        }
+      }
+    }
+  }
